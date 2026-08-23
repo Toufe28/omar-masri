@@ -11,11 +11,11 @@ import { useIsMobile } from "@/hooks/useMobile";
 type Language = "ar" | "en";
 
 const assets = {
-  hero: "/manus-storage/koro-moss-hero-projection_b2bf2d30.jpg",
-  portrait: "/manus-storage/koro-moss-portrait-study_56521cb1.jpg",
-  landscape: "/manus-storage/koro-moss-landscape-study_68729dd4.jpg",
-  motion: "/manus-storage/koro-moss-motion-study_34b50128.jpg",
-  mark: "/manus-storage/koro-moss-aperture-mark_d5db5650.png",
+  hero: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663906171816/zQAWGCbPfYLVKpNQ.jpg",
+  portrait: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663906171816/dOVUdUPKIjHfnTWh.jpg",
+  landscape: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663906171816/MWZtKsllFynhmhsY.jpg",
+  motion: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663906171816/YSQmPnzeoCsKHVnK.jpg",
+  mark: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663906171816/XamrqExIMkVmeevp.png",
 };
 
 const copy = {
@@ -105,19 +105,19 @@ const studies = [
   {
     number: "01", image: assets.portrait, tone: "portrait", year: "2026", format: "Still / Direction",
     title: { ar: "أشكال على الحافة", en: "Liminal Forms" },
-    type: { ar: "توجيه حملة / باريس", en: "Campaign direction / Paris" },
+    type: { ar: "توجيه حملة / نهر النيل", en: "Campaign direction / Paris" },
     detail: { ar: "دراسة في الطقوس، الخطوط، ونور الميّه لدار جديدة بتشتغل بالأشياء.", en: "A study in ritual, silhouette, and waterline light for a new house of objects." },
   },
   {
     number: "02", image: assets.landscape, tone: "landscape", year: "2025", format: "World / System",
     title: { ar: "الإشارة البطيئة", en: "The Slow Signal" },
-    type: { ar: "نظام بصري / مينوركا", en: "Image system / Menorca" },
+    type: { ar: "نظام بصري / سبعة اكتوبر", en: "Image system / Menorca" },
     detail: { ar: "ساحل بيتحوّل لقواعد بصرية لفندق بيشتغل بذاكرة طويلة.", en: "A coastline becomes a visual grammar for hospitality with a long memory." },
   },
   {
     number: "03", image: assets.motion, tone: "motion", year: "2026", format: "Motion / Editorial",
     title: { ar: "نقطة ثبات", en: "Holding Pattern" },
-    type: { ar: "موشن إيديتوريال / لندن", en: "Editorial motion / London" },
+    type: { ar: "موشن إيديتوريال / الجيزة", en: "Editorial motion / London" },
     detail: { ar: "دراسة ملابس متحرّكة بتخلّي الوقت نفسه يبان في كادر واحد.", en: "A moving wardrobe study composed to make duration visible in a single frame." },
   },
 ] as const;
@@ -130,10 +130,10 @@ const capabilities = [
 ] as const;
 
 const locations = [
-  ["01", { ar: "الجيزة", en: "London" }, { ar: "مكتب ميداني · GMT", en: "Field office · GMT" }],
-  ["02", { ar: "الفيوم", en: "New York" }, { ar: "شريك إنتاج · EST", en: "Production partner · EST" }],
+  ["01", { ar: "المعادي", en: "London" }, { ar: "مكتب ميداني · GMT", en: "Field office · GMT" }],
+  ["02", { ar: "الجيزة", en: "New York" }, { ar: "شريك إنتاج · EST", en: "Production partner · EST" }],
   ["03", { ar: "نهر النيل", en: "Paris" }, { ar: "شبكة كاستينج · CET", en: "Casting network · CET" }],
-  ["04", { ar: "المعادي", en: "Everywhere else" }, { ar: "على مقاس النور الصح", en: "Built around the right light" }],
+  ["04", { ar: "الفيوم", en: "Everywhere else" }, { ar: "على مقاس النور الصح", en: "Built around the right light" }],
 ] as const;
 
 const reveal = { hidden: { opacity: 0, y: 28 }, visible: { opacity: 1, y: 0 } };
@@ -153,6 +153,14 @@ function Eyebrow({ children, dark = false }: { children: React.ReactNode; dark?:
   return <motion.div className={`eyebrow ${dark ? "eyebrow--dark" : ""}`} initial={{ opacity: 0, x: -14, y: 8 }} whileInView={{ opacity: 1, x: 0, y: 0 }} viewport={{ once: true, amount: 0.5 }} transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}><span className="eyebrow__dot" /><span>{children}</span></motion.div>;
 }
 
+function ScrollImage({ src, alt, className = "" }: { src: string; alt: string; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const scale = useTransform(scrollYProgress, [0, 0.28, 0.72, 1], [1.16, 1.03, 0.98, 1.1]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.78, 1], [0, 1, 1, 0.48]);
+  return <motion.div ref={ref} className={`scroll-image ${className}`} style={{ scale, opacity }}><img src={src} alt={alt} /></motion.div>;
+}
+
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -169,8 +177,12 @@ export default function Home() {
   const projectX = useTransform(workProgress, [0, 1], ["0%", "-65%"]);
   const heroY = useTransform(scrollYProgress, [0, 0.25], ["0%", "16%"]);
   const heroScale = useTransform(scrollYProgress, [0, 0.28], [1.06, 1]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.05, 0.28], [1, 1, 0.7]);
   const t = copy[language];
   const dir = language === "ar" ? "rtl" : "ltr";
+  const headerShortcuts = language === "ar"
+    ? [["team", "الفريق"], ["work", "البورتفوليو"], ["contact", "نتكلم"], ["locations", "الموقع"]]
+    : [["team", "Team"], ["work", "Portfolio"], ["contact", "Let’s Chat"], ["locations", "Location"]];
 
   useEffect(() => {
     const savedLanguage = window.localStorage.getItem("aven-language");
@@ -218,10 +230,7 @@ export default function Home() {
           <span className="brand__wordmark">Aven</span>
         </motion.button>
         <nav className="desktop-nav" aria-label="Primary navigation">
-          <motion.button onClick={() => goTo("work")} whileHover={{ y: -2 }}>{t.nav[0]}</motion.button>
-          <motion.button onClick={() => goTo("approach")} whileHover={{ y: -2 }}>{t.nav[1]}</motion.button>
-          <motion.button onClick={() => goTo("locations")} whileHover={{ y: -2 }}>{t.nav[2]}</motion.button>
-          <motion.button className="desktop-nav__contact" onClick={() => goTo("contact")} whileHover={{ x: language === "ar" ? -3 : 3 }}>{t.contactNav} <ArrowUpRight size={15} /></motion.button>
+          {headerShortcuts.map(([id, label]) => <motion.button key={id} className={id === "contact" ? "desktop-nav__contact" : ""} onClick={() => goTo(id)} whileHover={id === "contact" ? { x: language === "ar" ? -3 : 3 } : { y: -2 }}>{label}{id === "contact" && <ArrowUpRight size={15} />}</motion.button>)}
         </nav>
         <div className="header-controls">
           <motion.button className="utility-button" onClick={switchLanguage} whileTap={{ scale: 0.94 }} title="Switch language"><Languages size={15} /><span>{language === "ar" ? "EN" : "ع"}</span></motion.button>
@@ -240,7 +249,7 @@ export default function Home() {
 
       <main id="top">
         <section className="hero" aria-labelledby="hero-title">
-          <motion.div className="hero__image-wrap" style={{ y: heroY, scale: heroScale }}><img src={assets.hero} alt="Model illuminated by a lagoon-teal projection in a black-box gallery" className="hero__image" /></motion.div>
+          <motion.div className="hero__image-wrap" style={{ y: heroY, scale: heroScale, opacity: heroOpacity }}><img src={assets.hero} alt="Model illuminated by a lagoon-teal projection in a black-box gallery" className="hero__image" /></motion.div>
           <div className="hero__wash" /><div className="hero__register hero__register--left">Creative direction / Image making / 2026</div>
           <motion.div className="hero__halo" animate={{ rotate: 360, scale: [1, 1.08, 1] }} transition={{ rotate: { duration: 14, repeat: Infinity, ease: "linear" }, scale: { duration: 4.6, repeat: Infinity, ease: "easeInOut" } }} aria-hidden="true"><img src={assets.mark} alt="" /></motion.div>
           <div className="hero__content">
@@ -255,17 +264,17 @@ export default function Home() {
 
         <section id="manifesto" className="manifesto paper-section" aria-labelledby="manifesto-title"><div className="manifesto__rail">Aven — image direction — London / global</div><div className="manifesto__lead"><Eyebrow>{t.premise}</Eyebrow><motion.h2 id="manifesto-title" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.45 }} variants={reveal} transition={{ duration: 0.75, ease: [0.23, 1, 0.32, 1] }}>{t.manifesto}</motion.h2></div><div className="manifesto__body"><p>{t.manifestoBody}</p><motion.div className="manifesto__note" initial={{ opacity: 0, rotate: -2, y: 16 }} whileInView={{ opacity: 1, rotate: 0, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.65, ease: [0.23, 1, 0.32, 1] }}><span>{t.noteLabel}</span><strong>{t.note}</strong></motion.div></div><div className="manifesto__number">01</div></section>
 
-        <section id="work" ref={workRef} className="work-chapter" aria-labelledby="work-title"><div className="work-chapter__sticky"><div className="work-chapter__intro"><Eyebrow dark>{t.workLabel}</Eyebrow><h2 id="work-title">{t.workHeading}</h2><p>{t.workIntro}</p><div className="work-chapter__progress"><MoveDown size={15} /><span>{t.scrollStudies}</span></div></div><motion.div className="work-chapter__archive" aria-hidden="true" animate={{ y: [0, -4, 0] }} transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}><div className="work-chapter__archive-ring"><img src={assets.mark} alt="" /></div><div><span>Optical index / 02</span><strong>{language === "ar" ? "كادر ورا كادر" : "Frame follows frame"}</strong></div><p>01 — 02 — 03 — 04 — 05 — 06</p></motion.div><div className="work-chapter__axis" aria-hidden="true"><span>Archive 02</span><i /><span>12 studies / 4 cities / 1 visual rule</span></div><motion.div className="work-track" style={isMobile ? undefined : { x: projectX }}>{studies.map((study, index) => <motion.article className={`work-card work-card--${study.tone}`} key={study.number} whileHover={{ y: -11, rotate: index === 1 ? 0.4 : -0.4 }} transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}><div className="work-card__image"><img src={study.image} alt={study.title[language]} /><div className="work-card__image-shade" /><span>{study.number}</span></div><div className="work-card__caption"><p>{study.type[language]}</p><h3>{study.title[language]}</h3><motion.button onClick={() => goTo("contact")} aria-label={t.contactNav} whileTap={{ scale: 0.92 }}><ArrowUpRight size={17} /></motion.button></div><p className="work-card__copy">{study.detail[language]}</p><div className="work-card__facts"><span>{study.year}</span><i /><span>{study.format}</span></div><div className="work-card__count">0{index + 1} — 03</div></motion.article>)}<div className="work-track__tail"><span>{t.moreWork}</span><ArrowUpRight size={22} /></div></motion.div></div></section>
+        <section id="work" ref={workRef} className="work-chapter" aria-labelledby="work-title"><div className="work-chapter__sticky"><div className="work-chapter__intro"><Eyebrow dark>{t.workLabel}</Eyebrow><h2 id="work-title">{t.workHeading}</h2><p>{t.workIntro}</p><div className="work-chapter__progress"><MoveDown size={15} /><span>{t.scrollStudies}</span></div></div><motion.div className="work-chapter__archive" aria-hidden="true" animate={{ y: [0, -4, 0] }} transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}><div className="work-chapter__archive-ring"><img src={assets.mark} alt="" /></div><div><span>Optical index / 02</span><strong>{language === "ar" ? "كادر ورا كادر" : "Frame follows frame"}</strong></div><p>01 — 02 — 03 — 04 — 05 — 06</p></motion.div><div className="work-chapter__axis" aria-hidden="true"><span>Archive 02</span><i /><span>12 studies / 4 cities / 1 visual rule</span></div><motion.div className="work-track" style={isMobile ? undefined : { x: projectX }}>{studies.map((study, index) => <motion.article className={`work-card work-card--${study.tone}`} key={study.number} whileHover={{ y: -11, rotate: index === 1 ? 0.4 : -0.4 }} transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}><div className="work-card__image"><ScrollImage src={study.image} alt={study.title[language]} /><div className="work-card__image-shade" /><span>{study.number}</span></div><div className="work-card__caption"><p>{study.type[language]}</p><h3>{study.title[language]}</h3><motion.button onClick={() => goTo("contact")} aria-label={t.contactNav} whileTap={{ scale: 0.92 }}><ArrowUpRight size={17} /></motion.button></div><p className="work-card__copy">{study.detail[language]}</p><div className="work-card__facts"><span>{study.year}</span><i /><span>{study.format}</span></div><div className="work-card__count">0{index + 1} — 03</div></motion.article>)}<div className="work-track__tail"><span>{t.moreWork}</span><ArrowUpRight size={22} /></div></motion.div></div></section>
 
-        <section className="cinema-slice" aria-label="Kinetic still from Aven"><div className="cinema-slice__inner"><motion.img src={assets.motion} alt="A model moving through a gallery corridor" initial={{ clipPath: "inset(12% 9% 12% 9%)", scale: 1.14 }} whileInView={{ clipPath: "inset(0% 0% 0% 0%)", scale: 1 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 1.15, ease: [0.77, 0, 0.175, 1] }} /><motion.div className="cinema-slice__overlay" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} animate={{ y: [0, -4, 0] }} viewport={{ once: true }} transition={{ y: { duration: 3.2, repeat: Infinity, ease: "easeInOut" }, opacity: { delay: 0.3, duration: 0.6 } }}>{t.motionLine}</motion.div><div className="cinema-slice__side-label">Image direction / 26.4° N</div></div></section>
+        <section className="cinema-slice" aria-label="Kinetic still from Aven"><div className="cinema-slice__inner"><motion.div initial={{ clipPath: "inset(12% 9% 12% 9%)" }} whileInView={{ clipPath: "inset(0% 0% 0% 0%)" }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 1.15, ease: [0.77, 0, 0.175, 1] }} className="cinema-scroll-frame"><ScrollImage src={assets.motion} alt="A model moving through a gallery corridor" /></motion.div><motion.div className="cinema-slice__overlay" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} animate={{ y: [0, -4, 0] }} viewport={{ once: true }} transition={{ y: { duration: 3.2, repeat: Infinity, ease: "easeInOut" }, opacity: { delay: 0.3, duration: 0.6 } }}>{t.motionLine}</motion.div><div className="cinema-slice__side-label">Image direction / 26.4° N</div></div></section>
 
-        <section id="approach" className="approach paper-section" aria-labelledby="approach-title"><div className="approach__heading"><Eyebrow>{t.approachLabel}</Eyebrow><h2 id="approach-title">{t.approachHeading}</h2></div><div className="approach__image"><motion.img src={assets.portrait} alt="Editorial portrait in a field of lagoon light" initial={{ y: 64, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} whileHover={{ scale: 1.025 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }} /><div className="approach__image-note"><span>{t.material}</span><strong>{language === "ar" ? "حرير / ميّه / نور" : "Silk / water / light"}</strong></div></div><div className="capabilities">{capabilities.map(([number, title, description]) => <motion.article className="capability" key={number} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} whileHover={{ y: -8, x: language === "ar" ? -3 : 3 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.45, delay: Number(number) * 0.05 }}><span>{number}</span><h3>{title[language]}</h3><p>{description[language]}</p><Plus size={17} /></motion.article>)}</div><div className="approach__folio" aria-hidden="true"><span>{language === "ar" ? "طريقة الكونتاكت شيت" : "Contact sheet method"}</span><i /><span>{language === "ar" ? "04 كادرات / لغة بصرية واحدة" : "04 frames / one visual language"}</span></div></section>
+        <section id="approach" className="approach paper-section" aria-labelledby="approach-title"><div id="team" className="approach__heading"><Eyebrow>{t.approachLabel}</Eyebrow><h2 id="approach-title">{t.approachHeading}</h2></div><div className="approach__image"><ScrollImage src={assets.portrait} alt="Editorial portrait in a field of lagoon light" /><div className="approach__image-note"><span>{t.material}</span><strong>{language === "ar" ? "حرير / ميّه / نور" : "Silk / water / light"}</strong></div></div><div className="capabilities">{capabilities.map(([number, title, description]) => <motion.article className="capability" key={number} initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} whileHover={{ y: -8, x: language === "ar" ? -3 : 3 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.45, delay: Number(number) * 0.05 }}><span>{number}</span><h3>{title[language]}</h3><p>{description[language]}</p><Plus size={17} /></motion.article>)}</div><div className="approach__folio" aria-hidden="true"><span>{language === "ar" ? "طريقة الكونتاكت شيت" : "Contact sheet method"}</span><i /><span>{language === "ar" ? "04 كادرات / لغة بصرية واحدة" : "04 frames / one visual language"}</span></div></section>
 
-        <section className="study-rail" aria-labelledby="study-rail-title" onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}><div className="study-rail__folio" aria-hidden="true">Archive reel / 04 — photographs selected from live direction studies</div><div className="study-rail__top"><div><Eyebrow dark>{t.railLabel}</Eyebrow><h2 id="study-rail-title">{t.closer}</h2></div><div className="study-rail__controls"><motion.button onClick={() => setIsPaused((paused) => !paused)} aria-label={isPaused ? t.play : t.pause} whileTap={{ scale: 0.94 }}>{isPaused ? <Play size={15} /> : <Pause size={15} />}<span>{isPaused ? t.play : t.pause}</span></motion.button><span>{String(activeStudy + 1).padStart(2, "0")} / 03</span></div></div><Carousel opts={{ loop: true, align: "start" }} setApi={setCarouselApi} className="study-carousel"><CarouselContent className="study-carousel__content">{studies.map((study, index) => <CarouselItem key={study.number} className="study-carousel__item"><article className="rail-study"><div className="rail-study__media"><img src={study.image} alt="" /><div className="rail-study__scrim" /><span>{study.type[language]}</span></div><div className="rail-study__copy"><span>{study.number}</span><h3>{study.title[language]}</h3><p>{study.detail[language]}</p><motion.button onClick={() => goTo("contact")} whileHover={{ x: language === "ar" ? -3 : 3 }}>{t.openStudy} <ArrowUpRight size={16} /></motion.button></div><div className="rail-study__ghost">0{index + 1}</div></article></CarouselItem>)}</CarouselContent><CarouselPrevious className="rail-arrow rail-arrow--previous" aria-label="Previous study" /><CarouselNext className="rail-arrow rail-arrow--next" aria-label="Next study" /></Carousel><div className="study-rail__tabs" role="tablist" aria-label="Selected studies">{studies.map((study, index) => <motion.button key={study.number} role="tab" aria-selected={activeStudy === index} className={activeStudy === index ? "is-active" : ""} onClick={() => carouselApi?.scrollTo(index)} whileHover={{ x: language === "ar" ? -2 : 2 }}><span>{study.number}</span>{study.title[language]}</motion.button>)}</div></section>
+        <section className="study-rail" aria-labelledby="study-rail-title" onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}><div className="study-rail__folio" aria-hidden="true">Archive reel / 04 — photographs selected from live direction studies</div><div className="study-rail__top"><div><Eyebrow dark>{t.railLabel}</Eyebrow><h2 id="study-rail-title">{t.closer}</h2></div><div className="study-rail__controls"><motion.button onClick={() => setIsPaused((paused) => !paused)} aria-label={isPaused ? t.play : t.pause} whileTap={{ scale: 0.94 }}>{isPaused ? <Play size={15} /> : <Pause size={15} />}<span>{isPaused ? t.play : t.pause}</span></motion.button><span>{String(activeStudy + 1).padStart(2, "0")} / 03</span></div></div><Carousel opts={{ loop: true, align: "start" }} setApi={setCarouselApi} className="study-carousel"><CarouselContent className="study-carousel__content">{studies.map((study, index) => <CarouselItem key={study.number} className="study-carousel__item"><article className="rail-study"><div className="rail-study__media"><ScrollImage src={study.image} alt="" /><div className="rail-study__scrim" /><span>{study.type[language]}</span></div><div className="rail-study__copy"><span>{study.number}</span><h3>{study.title[language]}</h3><p>{study.detail[language]}</p><motion.button onClick={() => goTo("contact")} whileHover={{ x: language === "ar" ? -3 : 3 }}>{t.openStudy} <ArrowUpRight size={16} /></motion.button></div><div className="rail-study__ghost">0{index + 1}</div></article></CarouselItem>)}</CarouselContent><CarouselPrevious className="rail-arrow rail-arrow--previous" aria-label="Previous study" /><CarouselNext className="rail-arrow rail-arrow--next" aria-label="Next study" /></Carousel><div className="study-rail__tabs" role="tablist" aria-label="Selected studies">{studies.map((study, index) => <motion.button key={study.number} role="tab" aria-selected={activeStudy === index} className={activeStudy === index ? "is-active" : ""} onClick={() => carouselApi?.scrollTo(index)} whileHover={{ x: language === "ar" ? -2 : 2 }}><span>{study.number}</span>{study.title[language]}</motion.button>)}</div></section>
 
         <section id="locations" className="locations paper-section" aria-labelledby="locations-title"><div className="locations__top"><Eyebrow>{t.locationLabel}</Eyebrow><div><h2 id="locations-title">{t.locationsHeading}</h2><p>{t.locationsBody}</p></div></div><div className="location-grid">{locations.map(([number, city, caption]) => <motion.article className="location-card" key={number} whileHover={{ y: -8 }} transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}><span>{number}</span><h3>{city[language]}</h3><p>{caption[language]}</p><div className="location-card__line" /></motion.article>)}</div><div className="locations__orbit"><motion.img src={assets.mark} alt="" animate={{ rotate: [0, 15, 0, -15, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} /><span>{t.available}</span></div><div className="locations__folio" aria-hidden="true"><span>Latitude 51.5072° N</span><i /><span>Longitude 0.1276° W</span></div></section>
 
-        <section id="contact" className="contact-section" aria-labelledby="contact-title"><div className="contact-section__image"><img src={assets.landscape} alt="Coastline and architecture at dusk" /><div /></div><motion.div className="contact-section__content" initial={{ opacity: 0, y: 34 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.35 }} transition={{ duration: 0.75, ease: [0.23, 1, 0.32, 1] }}><Eyebrow dark>{t.contactLabel}</Eyebrow><h2 id="contact-title">{t.contactHeading}</h2><motion.a href="mailto:studio@avenphotos.com" className="contact-link" whileHover={{ y: -3 }}>{"studio@avenphotos.com"} <ArrowUpRight size={25} /></motion.a><p>{t.contactBody}</p></motion.div><div className="contact-section__folio" aria-hidden="true"><img src={assets.mark} alt="" /><span>{language === "ar" ? "اللوحة الأخيرة / 006" : "Final plate / 006"}</span><i /><span>{language === "ar" ? "أول كادر قرار." : "The first frame is a decision."}</span></div><div className="contact-section__corner">AVN / 2026<br />Egypt · Worldwide</div></section>
+        <section id="contact" className="contact-section" aria-labelledby="contact-title"><div className="contact-section__image"><ScrollImage src={assets.landscape} alt="Coastline and architecture at dusk" /><div /></div><motion.div className="contact-section__content" initial={{ opacity: 0, y: 34 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.35 }} transition={{ duration: 0.75, ease: [0.23, 1, 0.32, 1] }}><Eyebrow dark>{t.contactLabel}</Eyebrow><h2 id="contact-title">{t.contactHeading}</h2><motion.a href="mailto:studio@avenphotos.com" className="contact-link" whileHover={{ y: -3 }}>{"studio@avenphotos.com"} <ArrowUpRight size={25} /></motion.a><p>{t.contactBody}</p></motion.div><div className="contact-section__folio" aria-hidden="true"><img src={assets.mark} alt="" /><span>{language === "ar" ? "اللوحة الأخيرة / 006" : "Final plate / 006"}</span><i /><span>{language === "ar" ? "أول كادر قرار." : "The first frame is a decision."}</span></div><div className="contact-section__corner">AVN / 2026<br />Egypt · Worldwide</div></section>
       </main>
       <footer className="footer"><div><img src={assets.mark} alt="" /><span>Aven</span></div><p>{t.footerLine}</p><span className="footer__folio">AVN / Optical archive / 2026</span><motion.button onClick={() => goTo("top")} whileHover={{ y: -2 }}>{t.back} <ArrowUpRight size={14} /></motion.button></footer>
     </div>
