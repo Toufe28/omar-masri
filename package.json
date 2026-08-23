@@ -11,6 +11,7 @@
     "check": "tsc --noEmit",
     "format": "prettier --write ."
   },
+  
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-accordion": "^1.2.12",
