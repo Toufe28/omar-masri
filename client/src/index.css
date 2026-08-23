@@ -77,6 +77,7 @@ img { display: block; max-width: 100%; }
 .site-shell { position: relative; overflow: clip; }
 .scroll-progress { position: fixed; z-index: 90; top: 0; left: 0; height: 3px; width: 100%; transform-origin: 0 50%; background: var(--lagoon); }
 .masthead { position: fixed; z-index: 80; top: 0; left: 0; right: 0; height: 84px; padding: 0 34px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid transparent; color: var(--paper); transition: color 220ms cubic-bezier(0.23, 1, 0.32, 1), background 220ms cubic-bezier(0.23, 1, 0.32, 1), border-color 220ms cubic-bezier(0.23, 1, 0.32, 1); }
+.masthead, .masthead button, .brand { font-family: "Inter", "Cairo", Arial, sans-serif; }
 .masthead--scrolled { color: var(--ink); background: rgba(246, 243, 236, 0.88); border-color: rgba(16, 17, 17, 0.13); backdrop-filter: blur(18px); }
 .brand { display: inline-flex; align-items: center; gap: 10px; padding: 0; color: inherit; background: transparent; text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; font-weight: 800; cursor: pointer; }
 .brand__mark { width: 38px; height: 38px; object-fit: contain; filter: drop-shadow(0 0 12px rgba(0,214,198,0.18)); }
@@ -99,7 +100,7 @@ img { display: block; max-width: 100%; }
 
 .hero { position: relative; display: flex; min-height: max(720px, 100svh); overflow: hidden; align-items: flex-end; isolation: isolate; background: #0e0f0f; }
 .hero__image-wrap { position: absolute; z-index: -2; inset: -9% -4%; will-change: transform; }
-.hero__image { width: 100%; height: 100%; object-fit: cover; object-position: center; filter: saturate(0.9) contrast(1.03); }
+.hero__image { width: 100%; height: 100%; object-fit: cover; object-position: center; filter: saturate(0.9) contrast(1.03) brightness(0.93); transition: filter 420ms cubic-bezier(0.23, 1, 0.32, 1); }
 .hero__wash { position: absolute; z-index: -1; inset: 0; background: linear-gradient(90deg, rgba(8, 10, 10, 0.78) 0%, rgba(8, 10, 10, 0.43) 41%, rgba(8, 10, 10, 0.05) 69%), linear-gradient(0deg, rgba(8, 10, 10, 0.48), transparent 45%); }
 .hero__halo { position: absolute; right: 8%; bottom: 15%; z-index: 0; width: clamp(90px, 11vw, 164px); opacity: 0.68; pointer-events: none; mix-blend-mode: screen; }
 .hero__halo img { width: 100%; height: 100%; object-fit: contain; }
@@ -168,7 +169,7 @@ img { display: block; max-width: 100%; }
 .work-card--motion .work-card__image { height: min(50vh, 540px); }
 .work-card__image img { width: 100%; height: 100%; object-fit: cover; transition: transform 850ms cubic-bezier(0.23, 1, 0.32, 1); }
 .work-card:hover .work-card__image img { transform: scale(1.055); }
-.work-card__image-shade { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.42), transparent 35%); }
+.work-card__image-shade { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.42), transparent 35%); transition: background 420ms cubic-bezier(0.23, 1, 0.32, 1); }
 .work-card__image span { position: absolute; top: 14px; right: 16px; color: var(--paper); font-size: 10px; font-weight: 800; letter-spacing: 0.12em; }
 .work-card__caption { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: end; margin-top: 15px; padding-top: 14px; border-top: 1px solid rgba(238,234,225,0.27); }
 .work-card__caption p { grid-column: 1 / -1; margin: 0; color: var(--lagoon); font-size: 8px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
@@ -185,7 +186,7 @@ img { display: block; max-width: 100%; }
 .cinema-slice__inner { position: relative; height: min(72vw, 820px); overflow: hidden; background: #202523; }
 .cinema-slice__inner::before { position: absolute; z-index: 2; top: 16px; left: 16px; width: 34px; height: 34px; content: ""; border-top: 1px solid var(--lagoon); border-left: 1px solid var(--lagoon); pointer-events: none; }
 .cinema-slice__inner img { width: 100%; height: 100%; object-fit: cover; }
-.cinema-slice__inner::after { position: absolute; inset: 0; content: ""; background: linear-gradient(90deg, rgba(0,0,0,0.25), transparent 50%), linear-gradient(0deg, rgba(0,0,0,0.42), transparent 38%); pointer-events: none; }
+.cinema-slice__inner::after { position: absolute; inset: 0; content: ""; background: linear-gradient(90deg, rgba(0,0,0,0.25), transparent 50%), linear-gradient(0deg, rgba(0,0,0,0.42), transparent 38%); pointer-events: none; transition: background 420ms cubic-bezier(0.23, 1, 0.32, 1); }
 .cinema-slice__overlay { position: absolute; z-index: 1; bottom: 34px; left: 34px; max-width: 500px; color: var(--paper); font-family: "DM Serif Display", Georgia, serif; font-size: clamp(36px, 5.4vw, 80px); line-height: 0.86; letter-spacing: -0.06em; }
 .cinema-slice__side-label { position: absolute; z-index: 1; top: 24px; right: 24px; color: var(--paper); font-size: 8px; font-weight: 800; letter-spacing: 0.12em; writing-mode: vertical-rl; text-transform: uppercase; }
 
@@ -220,7 +221,7 @@ img { display: block; max-width: 100%; }
 .rail-study__media { position: relative; min-height: 580px; overflow: hidden; }
 .rail-study__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1); }
 .rail-study:hover .rail-study__media img { transform: scale(1.035); }
-.rail-study__scrim { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.38), transparent 44%); }
+.rail-study__scrim { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.38), transparent 44%); transition: background 420ms cubic-bezier(0.23, 1, 0.32, 1); }
 .rail-study__media span { position: absolute; bottom: 21px; left: 23px; color: var(--paper); font-size: 8px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
 .rail-study__copy { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: flex-start; padding: 40px clamp(24px, 3vw, 50px); }
 .rail-study__copy > span { color: var(--lagoon); font-size: 10px; font-weight: 800; letter-spacing: 0.12em; }
@@ -255,8 +256,8 @@ img { display: block; max-width: 100%; }
 
 .contact-section { position: relative; min-height: 90vh; display: grid; place-items: center; overflow: hidden; color: var(--paper); background: var(--ink); }
 .contact-section__image { position: absolute; z-index: 0; inset: 0; }
-.contact-section__image img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.55) brightness(0.55); }
-.contact-section__image div { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8,10,10,0.9), rgba(8,10,10,0.5) 62%, rgba(8,10,10,0.69)), linear-gradient(0deg, rgba(8,10,10,0.7), transparent 40%); }
+.contact-section__image img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.55) brightness(0.55); transition: filter 420ms cubic-bezier(0.23, 1, 0.32, 1); }
+.contact-section__image div { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8,10,10,0.9), rgba(8,10,10,0.5) 62%, rgba(8,10,10,0.69)), linear-gradient(0deg, rgba(8,10,10,0.7), transparent 40%); transition: background 420ms cubic-bezier(0.23, 1, 0.32, 1); }
 .contact-section__content { position: relative; z-index: 1; width: min(1000px, 83vw); padding: 110px 0; }
 .contact-section h2 { margin: 22px 0 42px; font-family: "DM Serif Display", Georgia, serif; font-size: clamp(58px, 8vw, 130px); font-weight: 400; line-height: 0.82; letter-spacing: -0.07em; }
 .contact-section h2 em { color: var(--lagoon); }
@@ -297,7 +298,7 @@ img { display: block; max-width: 100%; }
   font-weight: 600;
   letter-spacing: -0.055em;
 }
-.hero h1 { font-family: "Playfair Display", "Cairo", Georgia, serif; font-weight: 600; letter-spacing: -0.06em; }
+.hero h1 { font-family: "Inter", "Cairo", Arial, sans-serif !important; font-weight: 600; letter-spacing: -0.075em; }
 
 /* Arabic-first direction: Cairo gives Egyptian Arabic a confident, compact editorial rhythm. */
 .site-shell[dir="rtl"] { font-family: "Inter", "Cairo", sans-serif; }
@@ -313,7 +314,7 @@ img { display: block; max-width: 100%; }
 .site-shell[dir="rtl"] .location-card h3,
 .site-shell[dir="rtl"] .contact-section h2,
 .site-shell[dir="rtl"] .contact-link { font-family: var(--font-display), "Cairo", serif; font-weight: 600; letter-spacing: -0.045em; }
-.site-shell[dir="rtl"] .hero h1 { font-family: "Playfair Display", "Cairo", serif; font-weight: 600; letter-spacing: -0.045em; }
+.site-shell[dir="rtl"] .hero h1 { font-family: "Inter", "Cairo", Arial, sans-serif; font-weight: 600; letter-spacing: -0.045em; }
 .site-shell[dir="rtl"] .hero__content { width: min(660px, 68vw); padding: 0 8.5vw 60px 0; }
 .site-shell[dir="rtl"] .hero__folio { left: auto; right: 8.5vw; }
 .site-shell[dir="rtl"] .hero__index { right: auto; left: 34px; }
@@ -343,6 +344,13 @@ img { display: block; max-width: 100%; }
 .dark .manifesto__body > p, .dark .capability p, .dark .locations__top p, .dark .location-card p { color: rgba(240,236,225,0.69); }
 .dark .approach__image-note { color: var(--ink); }
 .dark .paper-section .eyebrow { color: rgba(240,236,225,0.57); }
+.dark .site-shell { color: #f7f3eb; background: radial-gradient(circle at 76% 16%, rgba(0,214,198,0.12), transparent 28%), #101111; }
+.dark .hero__image { filter: saturate(1.14) contrast(1.13) brightness(1.04); }
+.dark .hero__wash { background: radial-gradient(circle at 77% 38%, rgba(0,214,198,0.18), transparent 31%), linear-gradient(90deg, rgba(3,5,5,0.84) 0%, rgba(3,5,5,0.35) 48%, rgba(3,5,5,0.02) 72%), linear-gradient(0deg, rgba(3,5,5,0.56), transparent 48%); }
+.dark .work-card__image-shade, .dark .rail-study__scrim { background: linear-gradient(0deg, rgba(0,0,0,0.52), transparent 48%), radial-gradient(circle at 72% 23%, rgba(0,214,198,0.18), transparent 42%); }
+.dark .cinema-slice__inner::after { background: linear-gradient(90deg, rgba(0,0,0,0.34), transparent 53%), linear-gradient(0deg, rgba(0,0,0,0.5), transparent 41%), radial-gradient(circle at 70% 18%, rgba(0,214,198,0.16), transparent 44%); }
+.dark .contact-section__image img { filter: saturate(0.82) contrast(1.1) brightness(0.72); }
+.dark .contact-section__image div { background: linear-gradient(90deg, rgba(2,4,4,0.92), rgba(2,4,4,0.4) 62%, rgba(2,4,4,0.68)), linear-gradient(0deg, rgba(2,4,4,0.72), transparent 40%), radial-gradient(circle at 73% 25%, rgba(0,214,198,0.16), transparent 40%); }
 
 
 @media (max-width: 900px) {
