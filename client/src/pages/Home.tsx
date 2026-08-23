@@ -105,19 +105,19 @@ const studies = [
   {
     number: "01", image: assets.portrait, tone: "portrait", year: "2026", format: "Still / Direction",
     title: { ar: "أشكال على الحافة", en: "Liminal Forms" },
-    type: { ar: "توجيه حملة / نهر النيل", en: "Campaign direction / Paris" },
+    type: { ar: "توجيه حملة / باريس", en: "Campaign direction / Paris" },
     detail: { ar: "دراسة في الطقوس، الخطوط، ونور الميّه لدار جديدة بتشتغل بالأشياء.", en: "A study in ritual, silhouette, and waterline light for a new house of objects." },
   },
   {
     number: "02", image: assets.landscape, tone: "landscape", year: "2025", format: "World / System",
     title: { ar: "الإشارة البطيئة", en: "The Slow Signal" },
-    type: { ar: "نظام بصري / سبعة اكتوبر", en: "Image system / Menorca" },
+    type: { ar: "نظام بصري / مينوركا", en: "Image system / Menorca" },
     detail: { ar: "ساحل بيتحوّل لقواعد بصرية لفندق بيشتغل بذاكرة طويلة.", en: "A coastline becomes a visual grammar for hospitality with a long memory." },
   },
   {
     number: "03", image: assets.motion, tone: "motion", year: "2026", format: "Motion / Editorial",
     title: { ar: "نقطة ثبات", en: "Holding Pattern" },
-    type: { ar: "موشن إيديتوريال / الجيزة", en: "Editorial motion / London" },
+    type: { ar: "موشن إيديتوريال / لندن", en: "Editorial motion / London" },
     detail: { ar: "دراسة ملابس متحرّكة بتخلّي الوقت نفسه يبان في كادر واحد.", en: "A moving wardrobe study composed to make duration visible in a single frame." },
   },
 ] as const;
@@ -130,10 +130,10 @@ const capabilities = [
 ] as const;
 
 const locations = [
-  ["01", { ar: "المعادي", en: "London" }, { ar: "مكتب ميداني · GMT", en: "Field office · GMT" }],
-  ["02", { ar: "الجيزة", en: "New York" }, { ar: "شريك إنتاج · EST", en: "Production partner · EST" }],
-  ["03", { ar: "نهر النيل", en: "Paris" }, { ar: "شبكة كاستينج · CET", en: "Casting network · CET" }],
-  ["04", { ar: "الفيوم", en: "Everywhere else" }, { ar: "على مقاس النور الصح", en: "Built around the right light" }],
+  ["01", { ar: "لندن", en: "London" }, { ar: "مكتب ميداني · GMT", en: "Field office · GMT" }],
+  ["02", { ar: "نيويورك", en: "New York" }, { ar: "شريك إنتاج · EST", en: "Production partner · EST" }],
+  ["03", { ar: "باريس", en: "Paris" }, { ar: "شبكة كاستينج · CET", en: "Casting network · CET" }],
+  ["04", { ar: "أي مكان تاني", en: "Everywhere else" }, { ar: "على مقاس النور الصح", en: "Built around the right light" }],
 ] as const;
 
 const reveal = { hidden: { opacity: 0, y: 28 }, visible: { opacity: 1, y: 0 } };
@@ -154,11 +154,12 @@ function Eyebrow({ children, dark = false }: { children: React.ReactNode; dark?:
 }
 
 function ScrollImage({ src, alt, className = "" }: { src: string; alt: string; className?: string }) {
+  const isMobile = useIsMobile();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const scale = useTransform(scrollYProgress, [0, 0.28, 0.72, 1], [1.16, 1.03, 0.98, 1.1]);
+  const scale = useTransform(scrollYProgress, [0, 0.28, 0.72, 1], isMobile ? [1.12, 1.025, 0.99, 1.055] : [1.16, 1.03, 0.98, 1.1]);
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.78, 1], [0, 1, 1, 0.48]);
-  return <motion.div ref={ref} className={`scroll-image ${className}`} style={{ scale, opacity }}><img src={src} alt={alt} /></motion.div>;
+  return <motion.div ref={ref} className={`scroll-image ${className}`} style={{ scale, opacity: isMobile ? undefined : opacity }} initial={isMobile ? { opacity: 0, y: 28 } : false} whileInView={isMobile ? { opacity: 1, y: 0 } : undefined} viewport={{ once: true, amount: 0.12 }} transition={{ duration: 0.65, ease: [0.23, 1, 0.32, 1] }}><img src={src} alt={alt} /></motion.div>;
 }
 
 export default function Home() {
@@ -274,7 +275,7 @@ export default function Home() {
 
         <section id="locations" className="locations paper-section" aria-labelledby="locations-title"><div className="locations__top"><Eyebrow>{t.locationLabel}</Eyebrow><div><h2 id="locations-title">{t.locationsHeading}</h2><p>{t.locationsBody}</p></div></div><div className="location-grid">{locations.map(([number, city, caption]) => <motion.article className="location-card" key={number} whileHover={{ y: -8 }} transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}><span>{number}</span><h3>{city[language]}</h3><p>{caption[language]}</p><div className="location-card__line" /></motion.article>)}</div><div className="locations__orbit"><motion.img src={assets.mark} alt="" animate={{ rotate: [0, 15, 0, -15, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} /><span>{t.available}</span></div><div className="locations__folio" aria-hidden="true"><span>Latitude 51.5072° N</span><i /><span>Longitude 0.1276° W</span></div></section>
 
-        <section id="contact" className="contact-section" aria-labelledby="contact-title"><div className="contact-section__image"><ScrollImage src={assets.landscape} alt="Coastline and architecture at dusk" /><div /></div><motion.div className="contact-section__content" initial={{ opacity: 0, y: 34 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.35 }} transition={{ duration: 0.75, ease: [0.23, 1, 0.32, 1] }}><Eyebrow dark>{t.contactLabel}</Eyebrow><h2 id="contact-title">{t.contactHeading}</h2><motion.a href="mailto:studio@avenphotos.com" className="contact-link" whileHover={{ y: -3 }}>{"studio@avenphotos.com"} <ArrowUpRight size={25} /></motion.a><p>{t.contactBody}</p></motion.div><div className="contact-section__folio" aria-hidden="true"><img src={assets.mark} alt="" /><span>{language === "ar" ? "اللوحة الأخيرة / 006" : "Final plate / 006"}</span><i /><span>{language === "ar" ? "أول كادر قرار." : "The first frame is a decision."}</span></div><div className="contact-section__corner">AVN / 2026<br />Egypt · Worldwide</div></section>
+        <section id="contact" className="contact-section" aria-labelledby="contact-title"><div className="contact-section__image"><ScrollImage src={assets.landscape} alt="Coastline and architecture at dusk" /><div /></div><motion.div className="contact-section__content" initial={{ opacity: 0, y: 34 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.35 }} transition={{ duration: 0.75, ease: [0.23, 1, 0.32, 1] }}><Eyebrow dark>{t.contactLabel}</Eyebrow><h2 id="contact-title">{t.contactHeading}</h2><motion.a href="mailto:studio@koroandmoss.com" className="contact-link" whileHover={{ y: -3 }}>{"studio@koroandmoss.com"} <ArrowUpRight size={25} /></motion.a><p>{t.contactBody}</p></motion.div><div className="contact-section__folio" aria-hidden="true"><img src={assets.mark} alt="" /><span>{language === "ar" ? "اللوحة الأخيرة / 006" : "Final plate / 006"}</span><i /><span>{language === "ar" ? "أول كادر قرار." : "The first frame is a decision."}</span></div><div className="contact-section__corner">AVN / 2026<br />London · Worldwide</div></section>
       </main>
       <footer className="footer"><div><img src={assets.mark} alt="" /><span>Aven</span></div><p>{t.footerLine}</p><span className="footer__folio">AVN / Optical archive / 2026</span><motion.button onClick={() => goTo("top")} whileHover={{ y: -2 }}>{t.back} <ArrowUpRight size={14} /></motion.button></footer>
     </div>
