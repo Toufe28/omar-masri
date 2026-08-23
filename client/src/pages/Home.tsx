@@ -130,10 +130,10 @@ const capabilities = [
 ] as const;
 
 const locations = [
-  ["01", { ar: "لندن", en: "London" }, { ar: "مكتب ميداني · GMT", en: "Field office · GMT" }],
-  ["02", { ar: "نيويورك", en: "New York" }, { ar: "شريك إنتاج · EST", en: "Production partner · EST" }],
-  ["03", { ar: "باريس", en: "Paris" }, { ar: "شبكة كاستينج · CET", en: "Casting network · CET" }],
-  ["04", { ar: "أي مكان تاني", en: "Everywhere else" }, { ar: "على مقاس النور الصح", en: "Built around the right light" }],
+  ["01", { ar: "الجيزة", en: "London" }, { ar: "مكتب ميداني · GMT", en: "Field office · GMT" }],
+  ["02", { ar: "الفيوم", en: "New York" }, { ar: "شريك إنتاج · EST", en: "Production partner · EST" }],
+  ["03", { ar: "نهر النيل", en: "Paris" }, { ar: "شبكة كاستينج · CET", en: "Casting network · CET" }],
+  ["04", { ar: "المعادي", en: "Everywhere else" }, { ar: "على مقاس النور الصح", en: "Built around the right light" }],
 ] as const;
 
 const reveal = { hidden: { opacity: 0, y: 28 }, visible: { opacity: 1, y: 0 } };
@@ -265,7 +265,7 @@ export default function Home() {
 
         <section id="locations" className="locations paper-section" aria-labelledby="locations-title"><div className="locations__top"><Eyebrow>{t.locationLabel}</Eyebrow><div><h2 id="locations-title">{t.locationsHeading}</h2><p>{t.locationsBody}</p></div></div><div className="location-grid">{locations.map(([number, city, caption]) => <motion.article className="location-card" key={number} whileHover={{ y: -8 }} transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}><span>{number}</span><h3>{city[language]}</h3><p>{caption[language]}</p><div className="location-card__line" /></motion.article>)}</div><div className="locations__orbit"><motion.img src={assets.mark} alt="" animate={{ rotate: [0, 15, 0, -15, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} /><span>{t.available}</span></div><div className="locations__folio" aria-hidden="true"><span>Latitude 51.5072° N</span><i /><span>Longitude 0.1276° W</span></div></section>
 
-        <section id="contact" className="contact-section" aria-labelledby="contact-title"><div className="contact-section__image"><img src={assets.landscape} alt="Coastline and architecture at dusk" /><div /></div><motion.div className="contact-section__content" initial={{ opacity: 0, y: 34 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.35 }} transition={{ duration: 0.75, ease: [0.23, 1, 0.32, 1] }}><Eyebrow dark>{t.contactLabel}</Eyebrow><h2 id="contact-title">{t.contactHeading}</h2><motion.a href="mailto:studio@koroandmoss.com" className="contact-link" whileHover={{ y: -3 }}>{"studio@koroandmoss.com"} <ArrowUpRight size={25} /></motion.a><p>{t.contactBody}</p></motion.div><div className="contact-section__folio" aria-hidden="true"><img src={assets.mark} alt="" /><span>{language === "ar" ? "اللوحة الأخيرة / 006" : "Final plate / 006"}</span><i /><span>{language === "ar" ? "أول كادر قرار." : "The first frame is a decision."}</span></div><div className="contact-section__corner">AVN / 2026<br />London · Worldwide</div></section>
+        <section id="contact" className="contact-section" aria-labelledby="contact-title"><div className="contact-section__image"><img src={assets.landscape} alt="Coastline and architecture at dusk" /><div /></div><motion.div className="contact-section__content" initial={{ opacity: 0, y: 34 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.35 }} transition={{ duration: 0.75, ease: [0.23, 1, 0.32, 1] }}><Eyebrow dark>{t.contactLabel}</Eyebrow><h2 id="contact-title">{t.contactHeading}</h2><motion.a href="mailto:studio@avenphotos.com" className="contact-link" whileHover={{ y: -3 }}>{"studio@avenphotos.com"} <ArrowUpRight size={25} /></motion.a><p>{t.contactBody}</p></motion.div><div className="contact-section__folio" aria-hidden="true"><img src={assets.mark} alt="" /><span>{language === "ar" ? "اللوحة الأخيرة / 006" : "Final plate / 006"}</span><i /><span>{language === "ar" ? "أول كادر قرار." : "The first frame is a decision."}</span></div><div className="contact-section__corner">AVN / 2026<br />Egypt · Worldwide</div></section>
       </main>
       <footer className="footer"><div><img src={assets.mark} alt="" /><span>Aven</span></div><p>{t.footerLine}</p><span className="footer__folio">AVN / Optical archive / 2026</span><motion.button onClick={() => goTo("top")} whileHover={{ y: -2 }}>{t.back} <ArrowUpRight size={14} /></motion.button></footer>
     </div>
